@@ -16,8 +16,6 @@ plt.gca().set_aspect('equal', adjustable='box')
 # Remove the axes, ticks, and labels as they are not part of the logo
 plt.axis('off')
 
-# Set a title for clarity
-plt.title("You like Kids N*gga")
 
 # Display the plot
 plt.show()
