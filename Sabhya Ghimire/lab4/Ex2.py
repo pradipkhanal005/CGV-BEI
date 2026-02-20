@@ -1,8 +1,9 @@
-#Draw circles with different radii and centres.
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 def plot_circle_points(xc, yc, x, y, xes, yes):
-    points = [
+    pts = [
         ( x + xc,  y + yc),
         (-x + xc,  y + yc),
         ( x + xc, -y + yc),
@@ -12,16 +13,14 @@ def plot_circle_points(xc, yc, x, y, xes, yes):
         ( y + xc, -x + yc),
         (-y + xc, -x + yc)
     ]
-    for px, py in points:
+    for px, py in pts:
         xes.append(px)
         yes.append(py)
 
-
-def midpoint_circle(r, xc, yc):
+def midpoint_circle(r, xc=0, yc=0):
     x = 0
     y = r
     p = 1 - r
-
     xes, yes = [], []
     plot_circle_points(xc, yc, x, y, xes, yes)
 
@@ -32,28 +31,25 @@ def midpoint_circle(r, xc, yc):
         else:
             y -= 1
             p = p + 2 * (x - y) + 1
-
-        plot_circle_points(xc, yc, x, y, xes, yes)
+        plot_circle_points(xc, yc, x, y, xes, yes) 
 
     return xes, yes
 
-
-# -------- Draw circles with different radii and centres --------
-circles = [
-    (10, 0, 0),
-    (15, 12, 8),
-    (8, -10, -6)
-]
-
-plt.figure(figsize=(6, 6))
-
-for r, xc, yc in circles:
+def plot_midpoint_circle(r, xc=0, yc=0):
     xes, yes = midpoint_circle(r, xc, yc)
-    plt.scatter(xes, yes, marker='.')
+    plt.scatter(xes, yes, color='red', s=10)
 
-plt.title("Midpoint Circle: Different Radii and Centres")
-plt.xlabel("X")
-plt.ylabel("Y")
-plt.grid(True)
-plt.axis('equal')
-plt.show()
+if __name__ == "__main__":
+    import os
+    os.makedirs("Assignments", exist_ok=True)
+    plt.figure(figsize=(6, 6))
+    for i in range(100, 100 + 8 * 50, 50):
+        plot_midpoint_circle(i, 0, 0)
+    plt.title("Midpoint Circle Algorithm - Concentric Circles")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.grid(True)
+    plt.axis('equal')
+    plt.savefig("Assignments/concentric_circle.png")
+    plt.close()
+

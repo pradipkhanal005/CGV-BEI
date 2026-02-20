@@ -5,9 +5,15 @@ pkgs.mkShell {
   packages = [
     pkgs.python311
     pkgs.python311Packages.venvShellHook
+    pkgs.python311Packages.pyqt5
+    pkgs.python311Packages.matplotlib
+    pkgs.python311Packages.numpy
 
     # C++ runtime
     pkgs.gcc.cc.lib
+
+    # Compression
+    pkgs.zlib
 
     # OpenGL
     pkgs.mesa
@@ -20,6 +26,9 @@ pkgs.mkShell {
     pkgs.xorg.libXrandr
     pkgs.xorg.libXinerama
     pkgs.xorg.libXi
+    pkgs.libxcb
+    pkgs.qt6.qtbase
+    pkgs.qt6.qtwayland
 
     # Audio (optional)
     pkgs.alsa-lib
@@ -32,16 +41,9 @@ pkgs.mkShell {
   shellHook = ''
     echo "Entering Ursina dev shell (Python 3.11)"
 
-    # Force clean venv if Python version changed
-    if [ -d "$venvDir" ]; then
-      rm -rf $venvDir
-    fi
-
-    python -m venv $venvDir
-    source $venvDir/bin/activate
-
     export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [
       pkgs.gcc.cc.lib
+      pkgs.zlib
       pkgs.mesa
       pkgs.libGL
       pkgs.libGLU
@@ -50,7 +52,6 @@ pkgs.mkShell {
       pkgs.xorg.libXrandr
       pkgs.xorg.libXinerama
       pkgs.xorg.libXi
-      pkgs.alsa-lib
       pkgs.pulseaudio
       pkgs.openal
     ]}:$LD_LIBRARY_PATH
